@@ -11,6 +11,8 @@ int main(void)
 	size_t len = 0;
 	int error = 0, loop  = 1;
 
+	signal(SIGINT, signal_exit);
+	signal(SIGTSTP, SIG_IGN);
 	do {
 		printf("hsh$ ");
 		error = getline(&buff, &len, stdin);

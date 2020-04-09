@@ -1,3 +1,4 @@
+#include "shell.h"
 /**
  * _strcmp - compare two strings
  * @s1: char*
@@ -28,4 +29,12 @@ int _strcmp(char *s1, char *s2)
 		}
 	}
 	return (0);
+}
+/**
+ * signal_exit - handling CTRL +
+ */
+void signal_exit(int a)
+{
+	(void) a;
+	write(1, "\nhsh$ ", 6);
 }

@@ -14,6 +14,7 @@ void simple_exec(char *argv[], int *loop, int *error, struct stat found);
 
 /* Auxiliar functions */
 int _strcmp(char *s1, char *s2);
+void signal_exit(int a);
 
 #endif /*SHELL_H*/
 

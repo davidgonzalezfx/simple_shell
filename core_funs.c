@@ -8,12 +8,16 @@
  */
 void simple_exec(char *argv[], int *loop, int *error, struct stat found)
 {
-	if (_strcmp("_which", argv[0]) == 0)
-		argv[0] = "/bin/which";
 	if (isatty(STDIN_FILENO) != 1)
 	{
-		*error = -1;
-		execve(argv[0], argv, NULL);
+		if (fork() == 0)
+			execve(argv[0], argv, NULL);
+		else
+		{
+			wait(NULL);
+			*error = 0;
+			return;
+		}
 	}
 	if (stat(argv[0], &found) == 0)
 	{
