@@ -15,20 +15,16 @@ int main(void)
 		printf("hsh$ ");
 		error = getline(&buff, &len, stdin);
 		if (error == -1)
-		{
-			perror("Error");
-			printf(">buff: %s", buff);
-			return (-1);
-		}
+			return (free(buff), printf("\n"), -1);
 		if (error == 1)
 			continue;
 		aux = strchr(buff, '\n');
 		if (aux != NULL)
 			*aux = '\0';
-		aux = strtok(buff, " ");
 		int tkn = 0;
 		char *argv[] = {NULL, NULL, NULL, NULL};
 
+		aux = strtok(buff, " ");
 		while (aux)
 		{
 			argv[tkn] = aux;
@@ -36,6 +32,7 @@ int main(void)
 			tkn++;
 		}
 		simple_exec(argv, &loop, &error, found);
+		loop++;
 	} while (error != EOF);
 	free(buff);
 	return (0);

@@ -17,7 +17,6 @@ void simple_exec(char *argv[], int *loop, int *error, struct stat found)
 	}
 	if (stat(argv[0], &found) == 0)
 	{
-
 		if (fork() == 0)
 			execve(argv[0], argv, NULL);
 		else
@@ -25,5 +24,4 @@ void simple_exec(char *argv[], int *loop, int *error, struct stat found)
 	}
 	else
 		printf("./hsh: %i: %s: not found\n", *loop, argv[0]);
-	loop++;
 }
