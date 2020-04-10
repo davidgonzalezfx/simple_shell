@@ -24,7 +24,11 @@ int main(void)
 		if (aux != NULL)
 			*aux = '\0';
 		int tkn = 0;
-		char *argv[] = {NULL, NULL, NULL, NULL};
+
+		char **argv = _calloc(128, 8);
+
+		if (!argv)
+			return (-1);
 
 		aux = strtok(buff, " ");
 		while (aux)
@@ -34,6 +38,7 @@ int main(void)
 			tkn++;
 		}
 		simple_exec(argv, &loop, &error, found);
+		free(argv);
 		loop++;
 	} while (error != EOF);
 	free(buff);
