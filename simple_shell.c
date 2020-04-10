@@ -1,5 +1,4 @@
 #include "shell.h"
-
 /**
  * main - our own UNIX cli
  * Return: 0
@@ -38,7 +37,7 @@ int main(void)
 			aux = strtok(NULL, " ");
 			tkn++;
 		}
-		simple_exec(argv, &loop, &error, found);
+		simple_exec(argv, &loop, &error, found, environ);
 		free(argv);
 		loop++;
 	} while (error != EOF);
