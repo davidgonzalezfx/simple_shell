@@ -8,6 +8,7 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <string.h>
+#include <signal.h>
 
 /* Core simple shell functions */
 void simple_exec(char **argv, int *loop, int *error, struct stat found);

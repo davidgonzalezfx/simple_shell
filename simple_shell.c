@@ -14,10 +14,11 @@ int main(void)
 	signal(SIGINT, signal_exit);
 	signal(SIGTSTP, SIG_IGN);
 	do {
-		printf("hsh$ ");
+		if (isatty(STDIN_FILENO) == 1)
+			write(1, "hsh$ ", 5);
 		error = getline(&buff, &len, stdin);
 		if (error == -1)
-			return (free(buff), printf("\n"), -1);
+			return (free(buff), -1);
 		if (error == 1)
 			continue;
 		aux = strchr(buff, '\n');
