@@ -6,7 +6,7 @@
  * @error: getline status
  * @found: checker of files
  */
-void simple_exec(char *argv[], int *loop, int *error, struct stat found)
+void simple_exec(char *argv[], int *loop, int *error, struct stat found, node_path_t *h)
 {
 	if (isatty(STDIN_FILENO) != 1)
 	{
@@ -26,10 +26,10 @@ void simple_exec(char *argv[], int *loop, int *error, struct stat found)
 		else
 			wait(NULL);
 	}
-	else if (search_in_path(argv[0]) != NULL)
+	else if (search_in_path(argv[0], h) != NULL)
 	{
 		if (fork() == 0)
-			execve(search_in_path(argv[0]), argv, NULL);
+			execve(search_in_path(argv[0], h), argv, NULL);
 		else
 			wait(NULL);
 	}	

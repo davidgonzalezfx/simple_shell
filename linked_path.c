@@ -4,25 +4,25 @@ extern char **environ;
 
 node_path_t *add_node_list(node_path_t **head, const char *str)
 {
-    node_path_t *new = malloc(sizeof(node_path_t)), *last = NULL;
+    	node_path_t *new = malloc(sizeof(node_path_t)), *last = NULL;
 
-    if (!new)
-        return (NULL);
+    	if (!new)
+        	return (NULL);
 
-    new->path = str;
-    new->next = NULL;
+    	new->path = str;
+    	new->next = NULL;
 
-    if (!*head){
-        *head = new;
-    }
-    else
-    {
-        last = *head;
-        while (last->next)
-            last = last->next;
-        last->next = new;
-    }
-    return(*head);
+    	if (!*head){
+        	*head = new;
+    	}
+    	else
+    	{
+        	last = *head;
+        	while (last->next)
+            	last = last->next;
+        	last->next = new;
+    	}
+    	return(*head);
 }
 
     
@@ -45,7 +45,8 @@ char *_getenv(const char *name)
     return (current_env);
 }
 
-node_path_t *create_linked_path(){
+node_path_t *create_linked_path()
+{
  	char *path = NULL, *token;
     	node_path_t *head = NULL;
     	int i = 0;
@@ -70,9 +71,9 @@ node_path_t *create_linked_path(){
     	return(head);
 }
 
-char *search_in_path(const char *command)
+char *search_in_path(const char *command, node_path_t *head)
 {
-	node_path_t *head = create_linked_path(), *current = head;
+	node_path_t *current = head;
 	struct stat statbuff;
 	char *path;
 

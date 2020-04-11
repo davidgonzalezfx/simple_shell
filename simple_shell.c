@@ -10,6 +10,7 @@ int main(void)
 	struct stat found;
 	size_t len = 0;
 	int error = 0, loop = 1;
+	node_path_t *head_of_path = create_linked_path();
 
 	signal(SIGINT, signal_exit);
 	signal(SIGTSTP, SIG_IGN);
@@ -33,9 +34,9 @@ int main(void)
 			aux = strtok(NULL, " ");
 			tkn++;
 		}
-		simple_exec(argv, &loop, &error, found);
+		simple_exec(argv, &loop, &error, found, head_of_path);
 		loop++;
 	} while (error != EOF);
 	free(buff);
-	return (0);
+return (0);
 }
