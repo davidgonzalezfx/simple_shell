@@ -16,7 +16,7 @@
  */
 typedef struct node_path
 {
-	const char *path;
+	char *path;
 	struct node_path *next;
 }node_path_t;
 
@@ -32,5 +32,6 @@ char *str_concat(const char *s1, const char *s2);
 unsigned int _strlength(const char *p);
 char *search_in_path(const char *command, node_path_t *head);
 node_path_t *create_linked_path();
+void free_list(node_path_t *head);
 #endif /*SHELL_H*/
 

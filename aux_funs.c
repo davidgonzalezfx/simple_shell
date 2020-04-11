@@ -67,7 +67,7 @@ char *str_concat(const char *s1, const char *s2)
 	if (!s2)
 		s2 = "";
 	scp = malloc((_strlength(s1) * sizeof(char)) +
-		     (_strlength(s2) * sizeof(char)) + 1);
+			 (_strlength(s2) * sizeof(char)) + 1);
 	if (!scp)
 		return (NULL);
 	i = 0;
@@ -84,4 +84,22 @@ char *str_concat(const char *s1, const char *s2)
 	*scp = '\0';
 	scp -= i;
 	return (scp);
+}
+
+/**
+ * free_list - frees a linked list
+ * @head: the head of the string
+ * Return: nothing
+ */
+void free_list(node_path_t *head)
+{
+	node_path_t *temp;
+
+	while (head)
+	{
+		temp = head;
+		head = head->next;
+		free(temp->path);
+		free(temp);
+	}
 }

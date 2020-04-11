@@ -14,6 +14,7 @@ int main(void)
 
 	signal(SIGINT, signal_exit);
 	signal(SIGTSTP, SIG_IGN);
+	print_list(head_of_path);
 	do {
 		printf("hsh$ ");
 		error = getline(&buff, &len, stdin);
@@ -37,6 +38,9 @@ int main(void)
 		simple_exec(argv, &loop, &error, found, head_of_path);
 		loop++;
 	} while (error != EOF);
+	printf("trying to free list");
+	free_list(head_of_path);
+	printf("lst freed");
 	free(buff);
-return (0);
+	return (0);
 }
