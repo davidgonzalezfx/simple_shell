@@ -9,7 +9,7 @@ int main(void)
 	char *buff = NULL, *aux = NULL;
 	struct stat found;
 	size_t len = 0;
-	int error = 0, loop  = 1;
+	int error = 0, loop = 1;
 
 	signal(SIGINT, signal_exit);
 	signal(SIGTSTP, SIG_IGN);

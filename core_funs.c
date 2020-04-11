@@ -22,10 +22,17 @@ void simple_exec(char *argv[], int *loop, int *error, struct stat found)
 	if (stat(argv[0], &found) == 0)
 	{
 		if (fork() == 0)
-			execve(argv[0], argv, NULL);
+			execve(argv[0], argv, NULL);	
 		else
 			wait(NULL);
 	}
+	else if (search_in_path(argv[0]) != NULL)
+	{
+		if (fork() == 0)
+			execve(search_in_path(argv[0]), argv, NULL);
+		else
+			wait(NULL);
+	}	
 	else
 		printf("./hsh: %i: %s: not found\n", *loop, argv[0]);
 }

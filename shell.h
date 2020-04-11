@@ -9,12 +9,27 @@
 #include <sys/wait.h>
 #include <string.h>
 
+/**
+ * struct nodepath - 
+ * @path: the path to its points
+ * @nexxt: the next node path
+ */
+typedef struct node_path
+{
+    const char *path;
+    struct node_path *next;
+}node_path_t;
+
 /* Core simple shell functions */
 void simple_exec(char *argv[], int *loop, int *error, struct stat found);
 
 /* Auxiliar functions */
 int _strcmp(char *s1, char *s2);
 void signal_exit(int a);
-
+size_t print_list(const node_path_t *h);
+node_path_t *add_node_list(node_path_t **head, const char *str);
+char *str_concat(const char *s1, const char *s2);
+unsigned int _strlength(const char *p);
+char *search_in_path(const char *command);
 #endif /*SHELL_H*/
 
