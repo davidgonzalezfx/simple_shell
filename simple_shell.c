@@ -38,12 +38,8 @@ int main(void)
 			aux = strtok(NULL, " ");
 			tkn++;
 		}
-
-		pathcp = get_cp_path(path);
-		head_of_path = create_linked_path(pathcp);
-		simple_exec(argv, &loop, &error, found, environ, head_of_path);
-		free(pathcp);
-    free(argv);
+		simple_exec(argv, &loop, found, environ);
+		free(argv);
 		loop++;
 	} while (error != EOF);
 	return (0);
