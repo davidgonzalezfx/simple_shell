@@ -3,12 +3,13 @@
  * simple_exec - core of simple_shell
  * @argv: arguments for cli
  * @loop: num of iteration
- * @error: getline status
+ * @error: getline statuss
  * @found: checker of files
  */
 void simple_exec(char *argv[], int *loop, int *error, struct stat found, node_path_t *h)
 {
 	char *pathname;
+
 	if (isatty(STDIN_FILENO) != 1)
 	{
 		if (fork() == 0)
@@ -37,4 +38,5 @@ void simple_exec(char *argv[], int *loop, int *error, struct stat found, node_pa
 	else
 		printf("./hsh: %i: %s: not found\n", *loop, argv[0]);
 	free(pathname);
+	free_list(h);
 }

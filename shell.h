@@ -31,7 +31,10 @@ node_path_t *add_node_list(node_path_t **head, const char *str);
 char *str_concat(const char *s1, const char *s2);
 unsigned int _strlength(const char *p);
 char *search_in_path(const char *command, node_path_t *head);
-node_path_t *create_linked_path();
+node_path_t *create_linked_path(char *path);
 void free_list(node_path_t *head);
+char *_strdup(char *str);
+char *_getenv(const char *name);
+char *get_cp_path(char *path);
 #endif /*SHELL_H*/
 

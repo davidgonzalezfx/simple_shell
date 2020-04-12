@@ -6,15 +6,14 @@
  */
 int main(void)
 {
-	char *buff = NULL, *aux = NULL;
+	char *buff = NULL, *aux = NULL, *path = _getenv("PATH"), *pathcp;
 	struct stat found;
 	size_t len = 0;
 	int error = 0, loop = 1;
-	node_path_t *head_of_path = create_linked_path();
+	node_path_t *head_of_path;
 
 	signal(SIGINT, signal_exit);
 	signal(SIGTSTP, SIG_IGN);
-	print_list(head_of_path);
 	do {
 		printf("hsh$ ");
 		error = getline(&buff, &len, stdin);
@@ -35,12 +34,11 @@ int main(void)
 			aux = strtok(NULL, " ");
 			tkn++;
 		}
+		pathcp = get_cp_path(path);
+		head_of_path = create_linked_path(pathcp);
 		simple_exec(argv, &loop, &error, found, head_of_path);
+		free(pathcp);
 		loop++;
 	} while (error != EOF);
-	printf("trying to free list");
-	free_list(head_of_path);
-	printf("lst freed");
-	free(buff);
 	return (0);
 }

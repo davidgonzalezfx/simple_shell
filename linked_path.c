@@ -27,47 +27,35 @@ node_path_t *add_node_list(node_path_t **head, const char *str)
 	
 char *_getenv(const char *name)
 {
-		char *current_env = NULL;
-		int i = 0;
+	char *current_env = NULL;
+	int i = 0;
 
-		while (environ[i])
+	while (environ[i])
+	{
+		current_env = strtok(environ[i], "=");
+		if (strcmp(name, current_env) == 0)
 		{
-			current_env = strtok(environ[i], "=");
-			if (strcmp(name, current_env) == 0)
-			{
-					current_env =  strtok(NULL, "=");
-					break;
-			}
-			current_env = "(null)";
-			i++;
-		}        
-		return (current_env);
+				current_env =  strtok(NULL, "=");
+				break;
+		}
+		current_env = "(null)";
+		i++;
+	}        
+	return (current_env);
 }
 
-node_path_t *create_linked_path()
+node_path_t *create_linked_path(char *path)
 {
- 	char *path = NULL, *token;
-		node_path_t *head = NULL;
-		int i = 0;
+ 	char *token;
+	node_path_t *head = NULL;
 
-		while (environ[i])
-		{
-			path = strtok(environ[i], "=");
-			if (strcmp("PATH", path) == 0)
-			{
-				path =  strtok(NULL, "=");
-				break;
- 		}
-			i++;
-		}
-
-		token = strtok(path, ":");
-		while (token)
-		{
-			add_node_list(&head,token); 
-			token = strtok(NULL, ":");
-		}
-		return(head);
+	token = strtok(path, ":");
+	while (token)
+	{
+		add_node_list(&head,token); 
+		token = strtok(NULL, ":");
+	}
+	return(head);
 }
 
 char *search_in_path(const char *command, node_path_t *head)
