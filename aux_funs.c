@@ -88,23 +88,6 @@ char *str_concat(const char *s1, const char *s2)
 }
 
 /**
- * free_list - frees a linked list
- * @head: the head of the string
- * Return: nothing
- */
-void free_list(node_path_t *head)
-{
-	node_path_t *temp;
-
-	while (head)
-	{
-		temp = head;
-		head = head->next;
-		free(temp->path);
-		free(temp);
-	}
-}
-/**
  * _calloc - allocates memory for an array
  * @nmemb: # elements
  * @size: size of elements

@@ -20,12 +20,13 @@ char *_getenv(const char *name)
 			{
 				for (; environ[i][j]; j++)
 					;
-				res = malloc(sizeof(char) * j - size);
+				res = malloc(sizeof(char) * (j - size));
 				if (!res)
 					return (NULL);
 				size++;
 				for (j = 0; environ[i][size]; size++, j++)
 					res[j] = environ[i][size];
+				res[j] = '\0';
 				return (res);
 			}
 		}
@@ -46,11 +47,12 @@ char *cmd_path(char **argv)
 	while (dirs)
 	{
 		struct stat found;
-		char *cmd = malloc(128);
+		char *cmd = malloc(1024);
 
 		strcpy(cmd, dirs);
 		strcat(cmd, "/");
 		strcat(cmd, argv[0]);
+		
 		if (stat(cmd, &found) == 0)
 			return (free(pth), cmd);
 		dirs = strtok(NULL, ":");

@@ -24,8 +24,7 @@ typedef struct node_path
 }node_path_t;
 
 /* Core simple shell functions */
-void simple_exec(char **argv, int *loop, struct stat found,
-								 char **environ);
+void simple_exec(char **argv, int *loop, struct stat found, char **environ);
 
 /* Auxiliar functions */
 int _strcmp(char *s1, char *s2);
