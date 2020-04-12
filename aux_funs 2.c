@@ -1,14 +1,5 @@
 #include "shell.h"
 
-unsigned int _strlen(char *ptr)
-{
-	unsigned int i = 0;
-	while (*ptr)
-	{
-		i++, ptr++;
-	}
-	return (i);
-}
  /**
  * _strdup - create an array with the an specified number
  * @str: string to copy

@@ -103,6 +103,7 @@ void free_list(node_path_t *head)
 		free(temp->path);
 		free(temp);
 	}
+}
 /**
  * _calloc - allocates memory for an array
  * @nmemb: # elements
