@@ -5,10 +5,11 @@
  */
 int main(void)
 {
-	char *buff = NULL, *aux = NULL;
+	char *buff = NULL, *aux = NULL, *path = _getenv("PATH"), *pathcp;
 	struct stat found;
 	size_t len = 0;
-	int error = 0, loop  = 1;
+	int error = 0, loop = 1;
+	node_path_t *head_of_path;
 
 	signal(SIGINT, signal_exit);
 	signal(SIGTSTP, SIG_IGN);
@@ -41,6 +42,5 @@ int main(void)
 		free(argv);
 		loop++;
 	} while (error != EOF);
-	free(buff);
 	return (0);
 }

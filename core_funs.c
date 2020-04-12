@@ -45,6 +45,7 @@ void non_interactive(char *cmd, char **argv, int *loop)
 	else if (stat(argv[0], &found) == 0)
 	{
 		if (fork() == 0)
+
 			execve(argv[0], argv, environ);
 		else
 		{
@@ -52,6 +53,13 @@ void non_interactive(char *cmd, char **argv, int *loop)
 			return;
 		}
 	}
+	else if ((pathname = search_in_path(argv[0], h)) != NULL)
+	{
+		if (fork() == 0)
+			execve(pathname, argv, NULL);
+		else
+			wait(NULL);
+	}	
 	else
 		not_found_error(loop, argv);
 }
