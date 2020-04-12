@@ -53,13 +53,6 @@ void non_interactive(char *cmd, char **argv, int *loop)
 			return;
 		}
 	}
-	else if ((pathname = search_in_path(argv[0], h)) != NULL)
-	{
-		if (fork() == 0)
-			execve(pathname, argv, NULL);
-		else
-			wait(NULL);
-	}	
 	else
 		not_found_error(loop, argv);
 }

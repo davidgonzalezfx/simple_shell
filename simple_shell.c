@@ -5,11 +5,10 @@
  */
 int main(void)
 {
-	char *buff = NULL, *aux = NULL, *path = _getenv("PATH"), *pathcp;
+	char *buff = NULL, *aux = NULL;
 	struct stat found;
 	size_t len = 0;
 	int error = 0, loop = 1;
-	node_path_t *head_of_path;
 
 	signal(SIGINT, signal_exit);
 	signal(SIGTSTP, SIG_IGN);
