@@ -1,5 +1,4 @@
 #include "shell.h"
-
 /**
  * main - our own UNIX cli
  * Return: 0
@@ -15,17 +14,22 @@ int main(void)
 	signal(SIGINT, signal_exit);
 	signal(SIGTSTP, SIG_IGN);
 	do {
-		printf("hsh$ ");
+		if (isatty(STDIN_FILENO) == 1)
+			write(1, "hsh$ ", 5);
 		error = getline(&buff, &len, stdin);
 		if (error == -1)
-			return (free(buff), printf("\n"), -1);
+			return (free(buff), -1);
 		if (error == 1)
 			continue;
 		aux = strchr(buff, '\n');
 		if (aux != NULL)
 			*aux = '\0';
 		int tkn = 0;
-		char *argv[] = {NULL, NULL, NULL, NULL};
+
+		char **argv = _calloc(128, 8);
+
+		if (!argv)
+			return (-1);
 
 		aux = strtok(buff, " ");
 		while (aux)
@@ -34,10 +38,12 @@ int main(void)
 			aux = strtok(NULL, " ");
 			tkn++;
 		}
+
 		pathcp = get_cp_path(path);
 		head_of_path = create_linked_path(pathcp);
-		simple_exec(argv, &loop, &error, found, head_of_path);
+		simple_exec(argv, &loop, &error, found, environ, head_of_path);
 		free(pathcp);
+    free(argv);
 		loop++;
 	} while (error != EOF);
 	return (0);

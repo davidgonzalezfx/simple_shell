@@ -5,8 +5,14 @@
  * @loop: num of iteration
  * @error: getline statuss
  * @found: checker of files
+ * @environ: environment vars
+ * @h: head to list
  */
-void simple_exec(char *argv[], int *loop, int *error, struct stat found, node_path_t *h)
+
+void simple_exec(char **argv, int *loop,
+								 int *error, struct stat found,
+								 char **environ,
+                node_path_t *h)
 {
 	char *pathname;
 
@@ -24,7 +30,8 @@ void simple_exec(char *argv[], int *loop, int *error, struct stat found, node_pa
 	if (stat(argv[0], &found) == 0)
 	{
 		if (fork() == 0)
-			execve(argv[0], argv, NULL);	
+
+			execve(argv[0], argv, environ);
 		else
 			wait(NULL);
 	}
@@ -36,7 +43,19 @@ void simple_exec(char *argv[], int *loop, int *error, struct stat found, node_pa
 			wait(NULL);
 	}	
 	else
-		printf("./hsh: %i: %s: not found\n", *loop, argv[0]);
-	free(pathname);
+	{
+		char error_msg[64] = "./hsh: ";
+		char *cnt = _itoa(*loop);
+
+		_strcat(error_msg, cnt);
+		_strcat(error_msg, ": ");
+		_strcat(error_msg, argv[0]);
+		_strcat(error_msg, ": not found\n");
+		free(cnt);
+		int error_len = _strlen(error_msg);
+
+		write(1, error_msg, error_len);
+	}
+  free(pathname);
 	free_list(h);
 }

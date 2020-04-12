@@ -8,6 +8,9 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <string.h>
+#include <signal.h>
+
+extern char **environ;
 
 /**
  * struct nodepath - 
@@ -21,11 +24,16 @@ typedef struct node_path
 }node_path_t;
 
 /* Core simple shell functions */
-void simple_exec(char *argv[], int *loop, int *error, struct stat found, node_path_t *h);
+
+void simple_exec(char **argv, int *loop,
+								 int *error, struct stat found,
+								 char **environ,
+                 node_path_t *h);
 
 /* Auxiliar functions */
 int _strcmp(char *s1, char *s2);
 void signal_exit(int a);
+
 size_t print_list(const node_path_t *h);
 node_path_t *add_node_list(node_path_t **head, const char *str);
 char *str_concat(const char *s1, const char *s2);
@@ -36,5 +44,11 @@ void free_list(node_path_t *head);
 char *_strdup(char *str);
 char *_getenv(const char *name);
 char *get_cp_path(char *path);
+void *_calloc(unsigned int nmemb, unsigned int size);
+char *_strcat(char *dest, char *src);
+int _strlen(char *s);
+void rev_string(char *s);
+char *_itoa(unsigned int num);
+
 #endif /*SHELL_H*/
 
