@@ -13,8 +13,7 @@
 extern char **environ;
 
 /* Core simple shell functions */
-void simple_exec(char **argv, int *loop,
-								 int *error, struct stat found,
+void simple_exec(char **argv, int *loop, struct stat found,
 								 char **environ);
 
 /* Auxiliar functions */
@@ -25,6 +24,9 @@ char *_strcat(char *dest, char *src);
 int _strlen(char *s);
 void rev_string(char *s);
 char *_itoa(unsigned int num);
+
+/* PATH */
+char *cmd_path(char **argv);
 
 #endif /*SHELL_H*/
 

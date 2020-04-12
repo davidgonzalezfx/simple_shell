@@ -37,7 +37,7 @@ int main(void)
 			aux = strtok(NULL, " ");
 			tkn++;
 		}
-		simple_exec(argv, &loop, &error, found, environ);
+		simple_exec(argv, &loop, found, environ);
 		free(argv);
 		loop++;
 	} while (error != EOF);
