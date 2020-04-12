@@ -3,14 +3,19 @@
  * simple_exec - core of simple_shell
  * @argv: arguments for cli
  * @loop: num of iteration
- * @error: getline status
+ * @error: getline statuss
  * @found: checker of files
  * @environ: environment vars
+ * @h: head to list
  */
+
 void simple_exec(char **argv, int *loop,
 								 int *error, struct stat found,
-								 char **environ)
+								 char **environ,
+                node_path_t *h)
 {
+	char *pathname;
+
 	if (isatty(STDIN_FILENO) != 1)
 	{
 		if (fork() == 0)
@@ -25,10 +30,18 @@ void simple_exec(char **argv, int *loop,
 	if (stat(argv[0], &found) == 0)
 	{
 		if (fork() == 0)
+
 			execve(argv[0], argv, environ);
 		else
 			wait(NULL);
 	}
+	else if ((pathname = search_in_path(argv[0], h)) != NULL)
+	{
+		if (fork() == 0)
+			execve(pathname, argv, NULL);
+		else
+			wait(NULL);
+	}	
 	else
 	{
 		char error_msg[64] = "./hsh: ";
@@ -43,4 +56,6 @@ void simple_exec(char **argv, int *loop,
 
 		write(1, error_msg, error_len);
 	}
+  free(pathname);
+	free_list(h);
 }

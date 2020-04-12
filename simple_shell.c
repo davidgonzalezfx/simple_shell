@@ -5,10 +5,11 @@
  */
 int main(void)
 {
-	char *buff = NULL, *aux = NULL;
+	char *buff = NULL, *aux = NULL, *path = _getenv("PATH"), *pathcp;
 	struct stat found;
 	size_t len = 0;
-	int error = 0, loop  = 1;
+	int error = 0, loop = 1;
+	node_path_t *head_of_path;
 
 	signal(SIGINT, signal_exit);
 	signal(SIGTSTP, SIG_IGN);
@@ -37,10 +38,13 @@ int main(void)
 			aux = strtok(NULL, " ");
 			tkn++;
 		}
-		simple_exec(argv, &loop, &error, found, environ);
-		free(argv);
+
+		pathcp = get_cp_path(path);
+		head_of_path = create_linked_path(pathcp);
+		simple_exec(argv, &loop, &error, found, environ, head_of_path);
+		free(pathcp);
+    free(argv);
 		loop++;
 	} while (error != EOF);
-	free(buff);
 	return (0);
 }
