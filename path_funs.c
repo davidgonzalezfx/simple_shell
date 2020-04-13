@@ -6,28 +6,31 @@
  */
 char *_getenv(char *name)
 {
-	int i, j, size;
-	char *res;
+	int i, j, var_len;
+	char *value;
 
-	size = _strlen(name);
+	var_len = _strlen(name);
 	for (i = 0; environ[i]; i++)
 	{
 		for (j = 0; environ[i][j] == name[j]; j++)
-			;
+		{};
+
 		if (environ[i][j] == '=')
 		{
-			if (size == j++)
+			if (var_len == j++)
 			{
 				for (; environ[i][j]; j++)
-					;
-				res = malloc(sizeof(char) * (j - size));
-				if (!res)
+				{};
+
+				value = malloc(j - var_len++);
+				if (!value)
 					return (NULL);
-				size++;
-				for (j = 0; environ[i][size]; size++, j++)
-					res[j] = environ[i][size];
-				res[j] = '\0';
-				return (res);
+
+				for (j = 0; environ[i][var_len]; var_len++, j++)
+					value[j] = environ[i][var_len];
+
+				value[j] = '\0';
+				return (value);
 			}
 		}
 	}

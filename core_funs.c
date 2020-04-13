@@ -8,41 +8,9 @@
 int check_builtin(params p)
 {
 	if (_strcmp(p.argv[0], "exit") == 0)
-	{
-		if (p.argv[1])
-		{
-			if (check_word(p.argv))
-			{
-				int status = atoi(p.argv[1]);
-
-				free(p.cmd);
-				free(p.buff);
-				free(p.argv);
-				exit(status);
-			}
-			else
-			{
-				char error_msg[64] = "./hsh: ";
-				char *cnt = _itoa(*(p.loop));
-
-				_strcat(error_msg, cnt);
-				_strcat(error_msg, ": ");
-				_strcat(error_msg, p.argv[0]);
-				_strcat(error_msg, ": Ilegal number: ");
-				_strcat(error_msg, p.argv[1]);
-				_strcat(error_msg, "\n");
-				free(cnt);
-				int error_len = _strlen(error_msg);
-
-				write(2, error_msg, error_len);
-				return (1);
-			}
-		}
-		free(p.cmd);
-		free(p.buff);
-		free(p.argv);
-		exit(0);
-	}
+		return (exit_built_in(p));
+	else if (_strcmp(p.argv[0], "env") == 0)
+		return (env_built_in(), 1);
 	return (0);
 }
 

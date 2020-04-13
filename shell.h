@@ -58,6 +58,8 @@ char *str_concat(char *s1, char *s2);
 
 /* buil-ins.c */
 int check_word(char **argv);
+int exit_built_in(params p);
+void env_built_in(void);
 
 #endif /*SHELL_H*/
 
