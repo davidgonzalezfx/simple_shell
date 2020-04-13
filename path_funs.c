@@ -52,7 +52,7 @@ char *cmd_path(char **argv)
 		strcpy(cmd, dirs);
 		strcat(cmd, "/");
 		strcat(cmd, argv[0]);
-		
+
 		if (stat(cmd, &found) == 0)
 			return (free(pth), cmd);
 		dirs = strtok(NULL, ":");
