@@ -6,7 +6,7 @@
 int main(void)
 {
 	char *buff = NULL, *aux = NULL;
-	struct stat found;
+	params p;
 	size_t len = 0;
 	int error = 0, loop = 1;
 
@@ -20,7 +20,7 @@ int main(void)
 			return (free(buff), -1);
 		if (error == 1)
 			continue;
-		aux = strchr(buff, '\n');
+		aux = _strchr(buff, '\n');
 		if (aux != NULL)
 			*aux = '\0';
 		int tkn = 0;
@@ -37,7 +37,8 @@ int main(void)
 			aux = strtok(NULL, " ");
 			tkn++;
 		}
-		simple_exec(argv, &loop, found, environ, buff);
+		p.argv = argv, p.loop = &loop, p.buff = buff;
+		simple_exec(p);
 		free(argv);
 		loop++;
 	} while (error != EOF);

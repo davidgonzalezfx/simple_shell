@@ -2,35 +2,34 @@
 
 /**
  * check_builtin - execute if argv is built-in command
- * @argv: arguments
- * @loop: used for print error
+ * @p: struct with all vars
  * Return: int
  */
-int check_builtin(char **argv, int *loop, char *cmd, char *buff)
+int check_builtin(params p)
 {
-	if (_strcmp(argv[0], "exit") == 0)
+	if (_strcmp(p.argv[0], "exit") == 0)
 	{
-		if (argv[1])
+		if (p.argv[1])
 		{
-			if (check_word(argv))
+			if (check_word(p.argv))
 			{
-				int status = atoi(argv[1]);
+				int status = atoi(p.argv[1]);
 
-				free(cmd);
-				free(buff);
-				free(argv);
+				free(p.cmd);
+				free(p.buff);
+				free(p.argv);
 				exit(status);
 			}
 			else
 			{
 				char error_msg[64] = "./hsh: ";
-				char *cnt = _itoa(*loop);
+				char *cnt = _itoa(*(p.loop));
 
 				_strcat(error_msg, cnt);
 				_strcat(error_msg, ": ");
-				_strcat(error_msg, argv[0]);
+				_strcat(error_msg, p.argv[0]);
 				_strcat(error_msg, ": Ilegal number: ");
-				_strcat(error_msg, argv[1]);
+				_strcat(error_msg, p.argv[1]);
 				_strcat(error_msg, "\n");
 				free(cnt);
 				int error_len = _strlen(error_msg);
@@ -39,9 +38,9 @@ int check_builtin(char **argv, int *loop, char *cmd, char *buff)
 				return (1);
 			}
 		}
-		free(cmd);
-		free(buff);
-		free(argv);
+		free(p.cmd);
+		free(p.buff);
+		free(p.argv);
 		exit(0);
 	}
 	return (0);
@@ -49,17 +48,16 @@ int check_builtin(char **argv, int *loop, char *cmd, char *buff)
 
 /**
  * not_found_error - hanlder for not found commands
- * @loop: for print cicle num
- * @argv: for print what wasn't found
+ * @p: struct with all vars
  */
-void not_found_error(int *loop, char **argv)
+void not_found_error(params p)
 {
 	char error_msg[64] = "./hsh: ";
-	char *cnt = _itoa(*loop);
+	char *cnt = _itoa(*(p.loop));
 
 	_strcat(error_msg, cnt);
 	_strcat(error_msg, ": ");
-	_strcat(error_msg, argv[0]);
+	_strcat(error_msg, p.argv[0]);
 	_strcat(error_msg, ": not found\n");
 	free(cnt);
 	int error_len = _strlen(error_msg);
@@ -69,32 +67,30 @@ void not_found_error(int *loop, char **argv)
 
 /**
  * non_interactive - handler for non interactive mode
- * @cmd: absolute path of argv[0] command
- * @argv: arguments from getline()
- * @loop: for not_found_error
+ * @p: struct with all vars
  * Return: void
  */
-void non_interactive(char *cmd, char **argv, int *loop, char *buff)
+void non_interactive(params p)
 {
 	struct stat found;
 
-	if (check_builtin(argv, loop, cmd, buff) == 1)
+	if (check_builtin(p) == 1)
 		return;
-	else if (cmd)
+	else if (p.cmd)
 	{
 		if (fork() == 0)
-			execve(cmd, argv, environ);
+			execve(p.cmd, p.argv, environ);
 		else
 		{
 			wait(NULL);
 			return;
 		}
 	}
-	else if (stat(argv[0], &found) == 0)
+	else if (stat(p.argv[0], &found) == 0)
 	{
 		if (fork() == 0)
 
-			execve(argv[0], argv, environ);
+			execve(p.argv[0], p.argv, environ);
 		else
 		{
 			wait(NULL);
@@ -102,40 +98,37 @@ void non_interactive(char *cmd, char **argv, int *loop, char *buff)
 		}
 	}
 	else
-		not_found_error(loop, argv);
+		not_found_error(p);
 }
 
 /**
  * simple_exec - core of simple_shell
- * @argv: arguments for cli
- * @loop: num of iteration
- * @found: checker of files
- * @environ: environment vars
+ * @p: struct with all vars
  */
-void simple_exec(char **argv, int *loop, struct stat found,
-								 char **environ, char *buff)
+void simple_exec(params p)
 {
-	char *cmd = cmd_path(argv);
+	p.cmd = cmd_path(p.argv);
+	struct stat found;
 
 	if (isatty(STDIN_FILENO) != 1)
-		non_interactive(cmd, argv, loop, buff);
-	else if (check_builtin(argv, loop, cmd, buff) == 1)
+		non_interactive(p);
+	else if (check_builtin(p) == 1)
 		return;
-	else if (stat(argv[0], &found) == 0)
+	else if (stat(p.argv[0], &found) == 0)
 	{
 		if (fork() == 0)
-			execve(argv[0], argv, environ);
+			execve(p.argv[0], p.argv, environ);
 		else
 			wait(NULL);
 	}
-	else if (cmd)
+	else if (p.cmd)
 	{
 		if (fork() == 0)
-			execve(cmd, argv, environ);
+			execve(p.cmd, p.argv, environ);
 		else
 			wait(NULL);
 	}
 	else
-		not_found_error(loop, argv);
-	free(cmd);
+		not_found_error(p);
+	free(p.cmd);
 }

@@ -13,28 +13,50 @@
 
 extern char **environ;
 
-/* Core simple shell functions */
-void simple_exec(char **argv, int *loop, struct stat found, char **environ, char *buff);
+/**
+ * struct params - object with all variables
+ * @argv: arguments from user
+ * @loop: num of times prompt has been showed
+ * @found: used to find files with stat()
+ * @buff: used with getline()
+ * @cmd: command = path + argv[0]
+ */
+typedef struct params
+{
+	char **argv;
+	int *loop;
+	struct stat found;
+	char *buff;
+	char *cmd;
+} params;
 
-/* Auxiliar functions */
-int _strcmp(char *s1, char *s2);
+/* core_funs.c */
+int check_builtin(params p);
+void not_found_error(params p);
+void non_interactive(params p);
+void simple_exec(params p);
+
+/* aux_funs.c */
 void signal_exit(int a);
-
-char *str_concat(const char *s1, const char *s2);
-unsigned int _strlength(const char *p);
-char *_strdup(char *str);
-char *_getenv(const char *name);
-char *get_cp_path(char *path);
 void *_calloc(unsigned int nmemb, unsigned int size);
+
+/* path_funs.c */
+char *_getenv(char *name);
+char *cmd_path(char **argv);
+
+/* string_funs.c */
 char *_strcat(char *dest, char *src);
 int _strlen(char *s);
 void rev_string(char *s);
 char *_itoa(unsigned int num);
+int _strcmp(char *s1, char *s2);
 
-/* PATH */
-char *cmd_path(char **argv);
+/* string_funs_2.c */
+char *_strchr(char *s, char c);
+char *_strcpy(char *dest, char *src);
+char *str_concat(char *s1, char *s2);
 
-/* buil-ins */
+/* buil-ins.c */
 int check_word(char **argv);
 
 #endif /*SHELL_H*/

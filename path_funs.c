@@ -4,12 +4,12 @@
  * @name: variable to search
  * Return: value of name var - Null if not found
  */
-char *_getenv(const char *name)
+char *_getenv(char *name)
 {
 	int i, j, size;
 	char *res;
 
-	size = strlen(name);
+	size = _strlen(name);
 	for (i = 0; environ[i]; i++)
 	{
 		for (j = 0; environ[i][j] == name[j]; j++)
@@ -49,9 +49,9 @@ char *cmd_path(char **argv)
 		struct stat found;
 		char *cmd = malloc(1024);
 
-		strcpy(cmd, dirs);
-		strcat(cmd, "/");
-		strcat(cmd, argv[0]);
+		_strcpy(cmd, dirs);
+		cmd = str_concat(cmd, "/");
+		cmd = str_concat(cmd, argv[0]);
 
 		if (stat(cmd, &found) == 0)
 			return (free(pth), cmd);
