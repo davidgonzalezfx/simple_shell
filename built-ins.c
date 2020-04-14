@@ -1,6 +1,23 @@
 #include "shell.h"
 
 /**
+ * _isdigit - check for digit
+ * @c: int
+ * Return: int
+ */
+int _isdigit(int c)
+{
+	if (c >= '0' && c <= '9')
+	{
+		return (1);
+	}
+	else
+	{
+		return (0);
+	}
+}
+
+/**
  * check_word - evalute alpha chars in string
  * @argv: arguments
  * Return: 1 if no alpha chars, 0 if yes
@@ -10,7 +27,7 @@ int check_word(char **argv)
 	int i;
 
 	for (i = 0; i < _strlen(argv[1]); i++)
-		if (!isdigit(argv[1][i]))
+		if (!_isdigit(argv[1][i]))
 			return (0);
 	return (1);
 }
