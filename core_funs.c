@@ -20,6 +20,7 @@ int check_builtin(params p)
  */
 void not_found_error(params p)
 {
+	int error_len;
 	char error_msg[64] = "./hsh: ";
 	char *cnt = _itoa(*(p.loop));
 
@@ -28,7 +29,8 @@ void not_found_error(params p)
 	_strcat(error_msg, p.argv[0]);
 	_strcat(error_msg, ": not found\n");
 	free(cnt);
-	int error_len = _strlen(error_msg);
+	
+	error_len = _strlen(error_msg);
 
 	write(2, error_msg, error_len);
 }
@@ -75,8 +77,9 @@ void non_interactive(params p)
  */
 void simple_exec(params p)
 {
-	p.cmd = cmd_path(p.argv);
 	struct stat found;
+
+	p.cmd = cmd_path(p.argv);
 
 	if (isatty(STDIN_FILENO) != 1)
 		non_interactive(p);

@@ -13,6 +13,9 @@ int main(void)
 	signal(SIGINT, signal_exit);
 	signal(SIGTSTP, SIG_IGN);
 	do {
+		int tkn;
+		char **argv;
+
 		if (isatty(STDIN_FILENO) == 1)
 			write(1, "hsh$ ", 5);
 		error = getline(&buff, &len, stdin);
@@ -23,9 +26,9 @@ int main(void)
 		aux = _strchr(buff, '\n');
 		if (aux != NULL)
 			*aux = '\0';
-		int tkn = 0;
+		tkn = 0;
 
-		char **argv = _calloc(128, 8);
+		argv = _calloc(128, 8);
 
 		if (!argv)
 			return (-1);

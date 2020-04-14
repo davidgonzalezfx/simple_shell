@@ -54,6 +54,7 @@ int exit_built_in(params p)
 		}
 		else
 		{
+			int error_len;
 			char error_msg[64] = "./hsh: ";
 			char *cnt = _itoa(*(p.loop));
 
@@ -64,7 +65,8 @@ int exit_built_in(params p)
 			_strcat(error_msg, p.argv[1]);
 			_strcat(error_msg, "\n");
 			free(cnt);
-			int error_len = _strlen(error_msg);
+
+			error_len = _strlen(error_msg);
 
 			write(2, error_msg, error_len);
 			return (1);
