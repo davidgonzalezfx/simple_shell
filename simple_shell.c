@@ -31,11 +31,11 @@ int main(void)
 
 		if (!argv)
 			return (-1);
-		aux = strtok(buff, " ");
+		aux = strtok(buff, " \t\n\v\r\a");
 		while (aux)
 		{
 			argv[tkn] = aux;
-			aux = strtok(NULL, " ");
+			aux = strtok(NULL, " \t\n\v\r\a");
 			tkn++;
 		}
 		p.argv = argv, p.loop = &loop, p.buff = buff;
