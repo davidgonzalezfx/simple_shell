@@ -27,12 +27,10 @@ int main(void)
 		if (aux != NULL)
 			*aux = '\0';
 		tkn = 0;
-
 		argv = _calloc(128, 8);
 
 		if (!argv)
 			return (-1);
-
 		aux = strtok(buff, " ");
 		while (aux)
 		{

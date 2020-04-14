@@ -29,7 +29,7 @@ void not_found_error(params p)
 	_strcat(error_msg, p.argv[0]);
 	_strcat(error_msg, ": not found\n");
 	free(cnt);
-	
+
 	error_len = _strlen(error_msg);
 
 	write(2, error_msg, error_len);
