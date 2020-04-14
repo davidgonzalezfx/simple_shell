@@ -32,6 +32,8 @@ int main(void)
 		if (!argv)
 			return (-1);
 		aux = strtok(buff, " \t\n\v\r\a");
+		if (!aux)
+			continue;
 		while (aux)
 		{
 			argv[tkn] = aux;
