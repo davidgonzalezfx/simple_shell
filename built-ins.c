@@ -45,7 +45,7 @@ int exit_built_in(params p)
 	{
 		if (check_word(p.argv))
 		{
-			int status = atoi(p.argv[1]);
+			int status = _atoi(p.argv[1]);
 
 			free(p.cmd);
 			free(p.buff);
