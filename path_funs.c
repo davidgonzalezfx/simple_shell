@@ -47,8 +47,6 @@ char *cmd_path(char **argv)
 	char *dirs;
 	char *pth = _getenv("PATH");
 
-	if (*pth == ':')
-		execve(argv[0], argv, environ);
 	dirs = strtok(pth, ":");
 
 	while (dirs)
