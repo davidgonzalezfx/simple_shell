@@ -35,6 +35,7 @@ void not_found_error(params *p)
 	error_len = _strlen(error_msg);
 
 	write(2, error_msg, error_len);
+	p->exit_value = 127;
 }
 
 /**

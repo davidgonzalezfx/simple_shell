@@ -75,7 +75,7 @@ int exit_built_in(params *p)
 	free(p->cmd);
 	free(p->buff);
 	free(p->argv);
-	exit(0);
+	exit(p->exit_value);
 }
 
 /**
