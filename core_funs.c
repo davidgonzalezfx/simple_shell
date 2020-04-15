@@ -43,7 +43,9 @@ void not_found_error(params *p)
  */
 void simple_exec(params *p)
 {
+	p->cmd = cmd_path(p->argv);
 	struct stat found;
+	int exit_execve;
 
 	if (check_builtin(p) == 1)
 		return;
@@ -55,20 +57,24 @@ void simple_exec(params *p)
 			exit(0);
 		}
 		else
-			wait(NULL);
+		{
+			wait(&exit_execve);
+			p->exit_value = WEXITSTATUS(exit_execve);
+		}
 	}
-	/*
-	 * else if (p->cmd)
-	 * {
-	 * if (fork() == 0)
-	 * {
-	 *	execve(p->cmd, p->argv, environ);
-	 *	exit(0);
-	 * }
-	 * else
-	*	wait(NULL);
-	 * }
-	 */
+	else if (p->cmd)
+	{
+		if (fork() == 0)
+		{
+			execve(p->cmd, p->argv, environ);
+			exit(0);
+		}
+		else
+		{
+			wait(&exit_execve);
+			p->exit_value = WEXITSTATUS(exit_execve);
+		}
+	}
 	else
 		not_found_error(p);
 	free(p->cmd);
