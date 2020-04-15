@@ -5,11 +5,11 @@
  * @p: struct with all vars
  * Return: int
  */
-int check_builtin(params p)
+int check_builtin(params *p)
 {
-	if (_strcmp("exit", p.argv[0]) == 0)
+	if (_strcmp("exit", p->argv[0]) == 0)
 		return (exit_built_in(p));
-	else if (_strcmp("env", p.argv[0]) == 0)
+	else if (_strcmp("env", p->argv[0]) == 0)
 		return (env_built_in(), 1);
 	return (0);
 }
@@ -18,15 +18,17 @@ int check_builtin(params p)
  * not_found_error - hanlder for not found commands
  * @p: struct with all vars
  */
-void not_found_error(params p)
+void not_found_error(params *p)
 {
 	int error_len;
-	char error_msg[64] = "./hsh: ";
-	char *cnt = _itoa(*(p.loop));
+	char error_msg[64] = "";
+	char *cnt = _itoa(*(p->loop));
 
+	_strcpy(error_msg, p->name);
+	_strcat(error_msg, ": ");
 	_strcat(error_msg, cnt);
 	_strcat(error_msg, ": ");
-	_strcat(error_msg, p.argv[0]);
+	_strcat(error_msg, p->argv[0]);
 	_strcat(error_msg, ": not found\n");
 	free(cnt);
 
@@ -36,70 +38,38 @@ void not_found_error(params p)
 }
 
 /**
- * non_interactive - handler for non interactive mode
+ * simple_exec - core of simple_shell
  * @p: struct with all vars
- * Return: void
  */
-void non_interactive(params p)
+void simple_exec(params *p)
 {
 	struct stat found;
 
 	if (check_builtin(p) == 1)
 		return;
-	else if (p.cmd)
+	else if (stat(p->argv[0], &found) == 0)
 	{
 		if (fork() == 0)
-			execve(p.cmd, p.argv, environ);
-		else
 		{
-			wait(NULL);
-			return;
+			execve(p->argv[0], p->argv, environ);
+			exit(0);
 		}
-	}
-	else if (stat(p.argv[0], &found) == 0)
-	{
-		if (fork() == 0)
-
-			execve(p.argv[0], p.argv, environ);
 		else
-		{
 			wait(NULL);
-			return;
-		}
 	}
+	/*
+	 * else if (p->cmd)
+	 * {
+	 * if (fork() == 0)
+	 * {
+	 *	execve(p->cmd, p->argv, environ);
+	 *	exit(0);
+	 * }
+	 * else
+	*	wait(NULL);
+	 * }
+	 */
 	else
 		not_found_error(p);
-}
-
-/**
- * simple_exec - core of simple_shell
- * @p: struct with all vars
- */
-void simple_exec(params p)
-{
-	struct stat found;
-
-	p.cmd = cmd_path(p.argv);
-
-	if (isatty(STDIN_FILENO) != 1)
-		non_interactive(p);
-	else if (check_builtin(p) == 1)
-		return;
-	else if (stat(p.argv[0], &found) == 0)
-	{
-		if (fork() == 0)
-			execve(p.argv[0], p.argv, environ);
-		else
-			wait(NULL);
-	}
-	else if (p.cmd)
-	{
-		if (fork() == 0)
-			execve(p.cmd, p.argv, environ);
-		else
-			wait(NULL);
-	}
-	else
-		not_found_error(p);
-	free(p.cmd);
+	free(p->cmd);
 }

@@ -39,30 +39,30 @@ int check_word(char **argv)
  * @p: struct with all vars inside
  * Return: 1 if no alpha chars
  */
-int exit_built_in(params p)
+int exit_built_in(params *p)
 {
-	if (p.argv[1])
+	if (p->argv[1])
 	{
-		if (check_word(p.argv))
+		if (check_word(p->argv))
 		{
-			int status = _atoi(p.argv[1]);
+			int status = _atoi(p->argv[1]);
 
-			free(p.cmd);
-			free(p.buff);
-			free(p.argv);
+			free(p->cmd);
+			free(p->buff);
+			free(p->argv);
 			exit(status);
 		}
 		else
 		{
 			int error_len;
 			char error_msg[64] = "./hsh: ";
-			char *cnt = _itoa(*(p.loop));
+			char *cnt = _itoa(*(p->loop));
 
 			_strcat(error_msg, cnt);
 			_strcat(error_msg, ": ");
-			_strcat(error_msg, p.argv[0]);
+			_strcat(error_msg, p->argv[0]);
 			_strcat(error_msg, ": Ilegal number: ");
-			_strcat(error_msg, p.argv[1]);
+			_strcat(error_msg, p->argv[1]);
 			_strcat(error_msg, "\n");
 			free(cnt);
 
@@ -72,9 +72,9 @@ int exit_built_in(params p)
 			return (1);
 		}
 	}
-	free(p.cmd);
-	free(p.buff);
-	free(p.argv);
+	free(p->cmd);
+	free(p->buff);
+	free(p->argv);
 	exit(0);
 }
 

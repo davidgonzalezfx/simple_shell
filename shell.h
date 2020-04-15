@@ -18,6 +18,8 @@ extern char **environ;
  * @found: used to find files with stat()
  * @buff: used with getline()
  * @cmd: command = path + argv[0]
+ * @name: name of executable used in errors
+ * @exit_value: int used for return
  */
 typedef struct params
 {
@@ -26,13 +28,14 @@ typedef struct params
 	struct stat found;
 	char *buff;
 	char *cmd;
+	char *name;
+	int exit_value;
 } params;
 
 /* core_funs.c */
-int check_builtin(params p);
-void not_found_error(params p);
-void non_interactive(params p);
-void simple_exec(params p);
+int check_builtin(params *p);
+void not_found_error(params *p);
+void simple_exec(params *p);
 
 /* aux_funs.c */
 void signal_exit(int a);
@@ -57,7 +60,7 @@ int _atoi(char *s);
 
 /* buil-ins.c */
 int check_word(char **argv);
-int exit_built_in(params p);
+int exit_built_in(params *p);
 void env_built_in(void);
 
 #endif /*SHELL_H*/
