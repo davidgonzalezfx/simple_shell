@@ -61,7 +61,7 @@ int _atoi(char *s);
 /* buil-ins.c */
 int check_word(char **argv);
 int exit_built_in(params *p);
-void env_built_in(void);
+void env_built_in(params *p);
 
 #endif /*SHELL_H*/
 

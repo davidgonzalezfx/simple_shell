@@ -84,7 +84,7 @@ int exit_built_in(params *p)
 /**
  * env_built_in - Handler of exit built-in command
  */
-void env_built_in(void)
+void env_built_in(params *p)
 {
 	int i = 0;
 
@@ -94,4 +94,5 @@ void env_built_in(void)
 		write(1, "\n", 1);
 		i++;
 	}
+	free(p->cmd);
 }
