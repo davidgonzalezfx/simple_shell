@@ -43,9 +43,10 @@ void not_found_error(params *p)
  */
 void simple_exec(params *p)
 {
-	p->cmd = cmd_path(p->argv);
 	struct stat found;
 	int exit_execve;
+
+	p->cmd = cmd_path(p->argv);
 
 	if (check_builtin(p) == 1)
 		return;
