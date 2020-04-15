@@ -22,7 +22,10 @@ int main(void)
 		if (error == -1)
 			return (free(buff), -1);
 		if (error == 1)
+		{
+			loop++;
 			continue;
+		}
 		aux = _strchr(buff, '\n');
 		if (aux != NULL)
 			*aux = '\0';
