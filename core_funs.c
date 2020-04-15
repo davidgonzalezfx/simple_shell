@@ -7,9 +7,9 @@
  */
 int check_builtin(params p)
 {
-	if (_strcmp(p.argv[0], "exit") == 0)
+	if (_strcmp("exit", p.argv[0]) == 0)
 		return (exit_built_in(p));
-	else if (_strcmp(p.argv[0], "env") == 0)
+	else if (_strcmp("env", p.argv[0]) == 0)
 		return (env_built_in(), 1);
 	return (0);
 }

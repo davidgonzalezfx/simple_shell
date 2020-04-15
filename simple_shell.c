@@ -31,7 +31,6 @@ int main(void)
 			*aux = '\0';
 		tkn = 0;
 		argv = _calloc(128, 8);
-
 		if (!argv)
 			return (-1);
 		aux = strtok(buff, " \t\n\v\r\a");
@@ -39,14 +38,11 @@ int main(void)
 			continue;
 		while (aux)
 		{
-			argv[tkn] = aux;
+			argv[tkn++] = aux;
 			aux = strtok(NULL, " \t\n\v\r\a");
-			tkn++;
 		}
 		p.argv = argv, p.loop = &loop, p.buff = buff;
-		simple_exec(p);
-		free(argv);
-		loop++;
+		simple_exec(p), free(argv), loop++;
 	} while (error != EOF);
 	return (0);
 }
