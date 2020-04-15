@@ -61,7 +61,7 @@ int exit_built_in(params *p)
 			_strcat(error_msg, cnt);
 			_strcat(error_msg, ": ");
 			_strcat(error_msg, p->argv[0]);
-			_strcat(error_msg, ": Ilegal number: ");
+			_strcat(error_msg, ": Illegal number: ");
 			_strcat(error_msg, p->argv[1]);
 			_strcat(error_msg, "\n");
 			free(cnt);
