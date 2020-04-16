@@ -38,6 +38,21 @@ void not_found_error(params *p)
 	p->exit_value = 127;
 }
 
+void fork_execute(char *cmd, params *p)
+{
+	pid_t check;
+	int exit_execve;
+
+	check = fork();
+	if (check == 0)
+		execve(cmd, p->argv, environ);
+	else
+	{
+		wait(&exit_execve);
+		p->exit_value = WEXITSTATUS(exit_execve);
+	}
+}
+
 /**
  * simple_exec - core of simple_shell
  * @p: struct with all vars
@@ -45,7 +60,7 @@ void not_found_error(params *p)
 void simple_exec(params *p)
 {
 	struct stat found;
-	int exit_execve;
+	
 
 	p->cmd = cmd_path(p->argv);
 
@@ -53,27 +68,11 @@ void simple_exec(params *p)
 		return;
 	else if (stat(p->argv[0], &found) == 0)
 	{
-		if (fork() == 0)
-		{
-			execve(p->argv[0], p->argv, environ);
-		}
-		else
-		{
-			wait(&exit_execve);
-			p->exit_value = WEXITSTATUS(exit_execve);
-		}
+		fork_execute(p->argv[0], p);
 	}
 	else if (p->cmd)
 	{
-		if (fork() == 0)
-		{
-			execve(p->cmd, p->argv, environ);
-		}
-		else
-		{
-			wait(&exit_execve);
-			p->exit_value = WEXITSTATUS(exit_execve);
-		}
+		fork_execute(p->cmd, p);
 	}
 	else
 		not_found_error(p);
