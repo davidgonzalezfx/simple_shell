@@ -11,6 +11,10 @@ int check_builtin(params *p)
 		return (exit_built_in(p));
 	else if (_strcmp("env", p->argv[0]) == 0)
 		return (env_built_in(p), 1);
+	else if (_strcmp("setenv", p->argv[0]) == 0)
+		return (set_env(p), 1);
+	else if (_strcmp("unsetenv", p->argv[0]) == 0)
+		return (unset_env(p), 1);
 	return (0);
 }
 

@@ -55,8 +55,8 @@ char *cmd_path(char **argv)
 		char *cmd = malloc(1024);
 
 		_strcpy(cmd, dirs);
-		cmd = str_concat(cmd, "/");
-		cmd = str_concat(cmd, argv[0]);
+		cmd = str_concat(cmd, "/", 1);
+		cmd = str_concat(cmd, argv[0], 1);
 
 		if (stat(cmd, &found) == 0)
 			return (free(pth), cmd);

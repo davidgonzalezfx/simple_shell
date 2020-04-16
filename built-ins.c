@@ -83,6 +83,7 @@ int exit_built_in(params *p)
 
 /**
  * env_built_in - Handler of exit built-in command
+ * @p: struct with all vars inside
  */
 void env_built_in(params *p)
 {
@@ -95,4 +96,55 @@ void env_built_in(params *p)
 		i++;
 	}
 	free(p->cmd);
+}
+
+/**
+ * set_env - Handler of exit built-in command
+ * @p: struct with all vars inside
+ */
+void set_env(params *p)
+{
+	char *cptmp, *name, *newenvar, *temp;
+	int i = 0;
+
+	while (environ[i])
+	{
+		cptmp = malloc(_strlen(environ[i]));
+		_strcpy(cptmp, environ[i]);
+		name = strtok(cptmp, "=");
+
+		if (_strcmp(p->argv[1], name) == 0)
+		{
+			temp = str_concat(name, "=", 1);
+			newenvar = str_concat(temp, p->argv[2], 1);
+			environ[i] = newenvar;
+		}
+		free(cptmp);
+		i++;
+	}
+}
+
+/**
+ * unset_env - Handler of exit built-in command
+ * @p: struct with all vars inside
+ */
+void unset_env(params *p)
+{
+	char *cptmp, *name, *newenvar, *temp;
+	int i = 0;
+
+	while (environ[i])
+	{
+		cptmp = malloc(_strlen(environ[i]));
+		_strcpy(cptmp, environ[i]);
+		name = strtok(cptmp, "=");
+
+		if (_strcmp(p->argv[1], name) == 0)
+		{
+			newenvar = str_concat(name, "=", 0);
+			environ[i] = newenvar;
+		}
+		free(cptmp);
+		i++;
+	}
 }
