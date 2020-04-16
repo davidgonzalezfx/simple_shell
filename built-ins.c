@@ -83,6 +83,7 @@ int exit_built_in(params *p)
 
 /**
  * env_built_in - Handler of exit built-in command
+ * @p: struct with all vars
  */
 void env_built_in(params *p)
 {

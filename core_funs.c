@@ -38,6 +38,35 @@ void not_found_error(params *p)
 	p->exit_value = 127;
 }
 
+/**
+ * not_permissions - hanlder for files without execute permissions
+ * @p: struct with all vars
+ */
+void not_permissions(params *p)
+{
+	int error_len;
+	char error_msg[64] = "";
+	char *cnt = _itoa(*(p->loop));
+
+	_strcpy(error_msg, p->name);
+	_strcat(error_msg, ": ");
+	_strcat(error_msg, cnt);
+	_strcat(error_msg, ": ");
+	_strcat(error_msg, p->argv[0]);
+	_strcat(error_msg, ": permissions denied\n");
+	free(cnt);
+
+	error_len = _strlen(error_msg);
+
+	write(2, error_msg, error_len);
+	p->exit_value = 126;
+}
+
+/**
+ * fork_execute - create child process and execute cmd
+ * @cmd: command or file to execute
+ * @p: struct with arguments
+ */
 void fork_execute(char *cmd, params *p)
 {
 	pid_t check;
@@ -60,12 +89,29 @@ void fork_execute(char *cmd, params *p)
 void simple_exec(params *p)
 {
 	struct stat found;
-	
+	DIR *check_fd = opendir(p->argv[0]);
 
 	p->cmd = cmd_path(p->argv);
 
-	if (check_builtin(p) == 1)
+	if (check_fd)
+	{
+		closedir(check_fd), p->exit_value = 126;
+		not_permissions(p);
+	}
+	else if (check_builtin(p) == 1)
 		return;
+	else if (p->argv[0][0] == '.' || p->argv[0][1] == '/')
+	{
+		if (stat(p->argv[0], &found) == 0)
+		{
+			if (access(p->argv[0], X_OK))
+				not_permissions(p);
+			else
+				fork_execute(p->argv[0], p);
+		}
+		else
+			not_found_error(p);
+	}
 	else if (stat(p->argv[0], &found) == 0)
 	{
 		fork_execute(p->argv[0], p);
