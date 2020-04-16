@@ -56,7 +56,6 @@ void simple_exec(params *p)
 		if (fork() == 0)
 		{
 			execve(p->argv[0], p->argv, environ);
-			exit(0);
 		}
 		else
 		{
@@ -69,7 +68,6 @@ void simple_exec(params *p)
 		if (fork() == 0)
 		{
 			execve(p->cmd, p->argv, environ);
-			exit(0);
 		}
 		else
 		{
