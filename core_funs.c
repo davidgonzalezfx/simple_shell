@@ -93,13 +93,15 @@ void simple_exec(params *p)
 
 	p->cmd = cmd_path(p->argv);
 
-	if (check_fd)
+	if (_strcmp(".", p->argv[0]) == 0)
+		;
+	else if (check_builtin(p) == 1)
+		return;
+	else if (check_fd)
 	{
 		closedir(check_fd), p->exit_value = 126;
 		not_permissions(p);
 	}
-	else if (check_builtin(p) == 1)
-		return;
 	else if (p->argv[0][0] == '.' || p->argv[0][0] == '/')
 	{
 		if (stat(p->argv[0], &found) == 0)
