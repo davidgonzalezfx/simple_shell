@@ -53,7 +53,7 @@ void not_permissions(params *p)
 	_strcat(error_msg, cnt);
 	_strcat(error_msg, ": ");
 	_strcat(error_msg, p->argv[0]);
-	_strcat(error_msg, ": permissions denied\n");
+	_strcat(error_msg, ": Permission denied\n");
 	free(cnt);
 
 	error_len = _strlen(error_msg);
@@ -93,8 +93,8 @@ void simple_exec(params *p)
 
 	p->cmd = cmd_path(p->argv);
 
-	if (_strcmp(".", p->argv[0]) == 0)
-		;
+	if (_strcmp(p->argv[0], ".") == 0)
+		closedir(check_fd);
 	else if (check_builtin(p) == 1)
 		return;
 	else if (check_fd)
