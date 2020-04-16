@@ -100,7 +100,7 @@ void simple_exec(params *p)
 	}
 	else if (check_builtin(p) == 1)
 		return;
-	else if (p->argv[0][0] == '.' || p->argv[0][1] == '/')
+	else if (p->argv[0][0] == '.' || p->argv[0][0] == '/')
 	{
 		if (stat(p->argv[0], &found) == 0)
 		{
@@ -109,12 +109,6 @@ void simple_exec(params *p)
 			else
 				fork_execute(p->argv[0], p);
 		}
-		else
-			not_found_error(p);
-	}
-	else if (stat(p->argv[0], &found) == 0)
-	{
-		fork_execute(p->argv[0], p);
 	}
 	else if (p->cmd)
 	{
