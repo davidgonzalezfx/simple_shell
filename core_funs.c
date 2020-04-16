@@ -1,29 +1,87 @@
 #include "shell.h"
+
+/**
+ * check_builtin - execute if argv is built-in command
+ * @p: struct with all vars
+ * Return: int
+ */
+int check_builtin(params *p)
+{
+	if (_strcmp("exit", p->argv[0]) == 0)
+		return (exit_built_in(p));
+	else if (_strcmp("env", p->argv[0]) == 0)
+		return (env_built_in(p), 1);
+	else if (_strcmp("setenv", p->argv[0]) == 0)
+		return (set_env(p), 1);
+	else if (_strcmp("unsetenv", p->argv[0]) == 0)
+		return (unset_env(p), 1);
+	return (0);
+}
+
+/**
+ * not_found_error - hanlder for not found commands
+ * @p: struct with all vars
+ */
+void not_found_error(params *p)
+{
+	int error_len;
+	char error_msg[64] = "";
+	char *cnt = _itoa(*(p->loop));
+
+	_strcpy(error_msg, p->name);
+	_strcat(error_msg, ": ");
+	_strcat(error_msg, cnt);
+	_strcat(error_msg, ": ");
+	_strcat(error_msg, p->argv[0]);
+	_strcat(error_msg, ": not found\n");
+	free(cnt);
+
+	error_len = _strlen(error_msg);
+
+	write(2, error_msg, error_len);
+	p->exit_value = 127;
+}
+
 /**
  * simple_exec - core of simple_shell
- * @argv: arguments for cli
- * @loop: num of iteration
- * @error: getline status
- * @found: checker of files
+ * @p: struct with all vars
  */
-void simple_exec(char *argv[], int *loop, int *error, struct stat found)
+void simple_exec(params *p)
 {
-	if (_strcmp("_which", argv[0]) == 0)
-		argv[0] = "/bin/which";
-	if (isatty(STDIN_FILENO) != 1)
-	{
-		*error = -1;
-		execve(argv[0], argv, NULL);
-	}
-	if (stat(argv[0], &found) == 0)
-	{
+	struct stat found;
+	int exit_execve;
 
+	p->cmd = cmd_path(p->argv);
+
+	if (check_builtin(p) == 1)
+		return;
+	else if (stat(p->argv[0], &found) == 0)
+	{
 		if (fork() == 0)
-			execve(argv[0], argv, NULL);
+		{
+			execve(p->argv[0], p->argv, environ);
+			exit(0);
+		}
 		else
-			wait(NULL);
+		{
+			wait(&exit_execve);
+			p->exit_value = WEXITSTATUS(exit_execve);
+		}
+	}
+	else if (p->cmd)
+	{
+		if (fork() == 0)
+		{
+			execve(p->cmd, p->argv, environ);
+			exit(0);
+		}
+		else
+		{
+			wait(&exit_execve);
+			p->exit_value = WEXITSTATUS(exit_execve);
+		}
 	}
 	else
-		printf("./hsh: %i: %s: not found\n", *loop, argv[0]);
-	loop++;
+		not_found_error(p);
+	free(p->cmd);
 }
