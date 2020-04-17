@@ -5,50 +5,64 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <sys/stat.h>
-#include <sys/types.h>
 #include <sys/wait.h>
 #include <string.h>
 #include <signal.h>
+#include <dirent.h>
 
 extern char **environ;
 
 /**
- * struct nodepath - 
- * @path: the path to its points
- * @nexxt: the next node path
+ * struct params - object with all variables
+ * @argv: arguments from user
+ * @loop: num of times prompt has been showed
+ * @found: used to find files with stat()
+ * @buff: used with getline()
+ * @cmd: command = path + argv[0]
+ * @name: name of executable used in errors
+ * @exit_value: int used for return
  */
-typedef struct node_path
+typedef struct params
 {
-	char *path;
-	struct node_path *next;
-}node_path_t;
+	char **argv;
+	int *loop;
+	struct stat found;
+	char *buff;
+	char *cmd;
+	char *name;
+	int exit_value;
+} params;
 
-/* Core simple shell functions */
+/* core_funs.c */
+int check_builtin(params *p);
+void not_found_error(params *p);
+void simple_exec(params *p);
 
-void simple_exec(char **argv, int *loop,
-		int *error, struct stat found,
-		char **environ,
-		node_path_t *h);
-
-/* Auxiliar functions */
-int _strcmp(char *s1, char *s2);
+/* aux_funs.c */
 void signal_exit(int a);
-
-size_t print_list(const node_path_t *h);
-node_path_t *add_node_list(node_path_t **head, const char *str);
-char *str_concat(const char *s1, const char *s2);
-unsigned int _strlength(const char *p);
-char *search_in_path(const char *command, node_path_t *head);
-node_path_t *create_linked_path(char *path);
-void free_list(node_path_t *head);
-char *_strdup(char *str);
-char *_getenv(const char *name);
-char *get_cp_path(char *path);
 void *_calloc(unsigned int nmemb, unsigned int size);
+
+/* path_funs.c */
+char *_getenv(char *name);
+char *cmd_path(char **argv);
+
+/* string_funs.c */
 char *_strcat(char *dest, char *src);
 int _strlen(char *s);
 void rev_string(char *s);
 char *_itoa(unsigned int num);
+int _strcmp(char *s1, char *s2);
+
+/* string_funs_2.c */
+char *_strchr(char *s, char c);
+char *_strcpy(char *dest, char *src);
+char *str_concat(char *s1, char *s2);
+int _atoi(char *s);
+
+/* buil-ins.c */
+int check_word(char **argv);
+int exit_built_in(params *p);
+void env_built_in(params *p);
 
 #endif /*SHELL_H*/
 

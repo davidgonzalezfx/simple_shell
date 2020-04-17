@@ -76,3 +76,19 @@ char *_itoa(unsigned int num)
 	rev_string(init);
 	return (init);
 }
+
+/**
+ * _strcmp - compare two strings
+ * @s1: char*
+ * @s2: char*
+ * Return: int -1, 1, 0
+ */
+int _strcmp(char *s1, char *s2)
+{
+	int i;
+
+	for (i = 0; s1[i] != '\0'; i++)
+		if (s1[i] != s2[i])
+			return (-1);
+	return (0);
+}
