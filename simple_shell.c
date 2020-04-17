@@ -19,7 +19,7 @@ int test(params *p)
 		return (-1);
 	aux = strtok(p->buff, " ");
 	if (!aux)
-		return (1);
+		return (free(p->argv), 1);
 	while (aux)
 	{
 		p->argv[tkn++] = aux;

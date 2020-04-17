@@ -107,6 +107,8 @@ void set_env(params *p)
 	char *cptmp, *name, *newenvar, *temp;
 	int i = 0;
 
+	if(!p->argv[1])
+		return (var_not_found_error(p));
 	while (environ[i])
 	{
 		cptmp = malloc(_strlen(environ[i]));
@@ -118,10 +120,14 @@ void set_env(params *p)
 			temp = str_concat(name, "=", 1);
 			newenvar = str_concat(temp, p->argv[2], 1);
 			environ[i] = newenvar;
+			return;
 		}
 		free(cptmp);
 		i++;
 	}
+	temp = str_concat(p->argv[1], "=", 0);
+	newenvar = str_concat(temp, p->argv[2], 1);
+	environ[i] = newenvar;
 }
 
 /**
@@ -133,6 +139,8 @@ void unset_env(params *p)
 	char *cptmp, *name, *newenvar, *temp;
 	int i = 0;
 
+	if(!p->argv[1])
+		return (var_not_found_error(p));
 	while (environ[i])
 	{
 		cptmp = malloc(_strlen(environ[i]));
@@ -143,6 +151,7 @@ void unset_env(params *p)
 		{
 			newenvar = str_concat(name, "=", 0);
 			environ[i] = newenvar;
+			return;
 		}
 		free(cptmp);
 		i++;

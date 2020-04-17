@@ -8,6 +8,7 @@
 #include <sys/wait.h>
 #include <string.h>
 #include <signal.h>
+#include <dirent.h>
 
 extern char **environ;
 
@@ -64,6 +65,11 @@ int exit_built_in(params *p);
 void env_built_in(params *p);
 void set_env(params *p);
 void unset_env(params *p);
+
+/* error hanlders*/
+void not_permissions(params *p);
+void not_found_error(params *p);
+void var_not_found_error(params *p);
 
 #endif /*SHELL_H*/
 
