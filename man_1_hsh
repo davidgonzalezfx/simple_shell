@@ -3,7 +3,7 @@
 .B Simple shell
 - command interpreter
 .SH SYNOPSIS
-.B sh	[-/+abCEefhIimnPpTuVvx]	[-/+o longname]	[script	[arg ...]]
+.B hsh$	[-/+abCEefhIimnPpTuVvx]	[-/+o longname]	[script	[arg ...]]
 .SH DESCRIPTION
 Simple shell is a command-line interpreter that provides a command line user interface for Unix-like operating systems.
 
@@ -37,6 +37,14 @@ Sets an environment variable, overwrite if exist, creates it of doesn't exist.
 .B unsetenv
 Unsets a an environment variable, prints error if cant be found
 
+.SH Examples
+hsh$ pwd
+
+hsh$ env
+
+hsh$ setenv PATH /user/bin
+
+hsh$ exit
 .SH OPTIONS
 No options
 .SH SEE ALSO
