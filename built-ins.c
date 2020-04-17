@@ -108,7 +108,10 @@ void set_env(params *p)
 	int i = 0;
 
 	if(!p->argv[1])
-		return (var_not_found_error(p));
+	{
+		var_not_found_error(p);
+		return;
+	}
 	while (environ[i])
 	{
 		cptmp = malloc(_strlen(environ[i]));
@@ -136,11 +139,14 @@ void set_env(params *p)
  */
 void unset_env(params *p)
 {
-	char *cptmp, *name, *newenvar, *temp;
+	char *cptmp, *name, *newenvar;
 	int i = 0;
 
 	if(!p->argv[1])
-		return (var_not_found_error(p));
+	{
+		var_not_found_error(p);
+		return;
+	}
 	while (environ[i])
 	{
 		cptmp = malloc(_strlen(environ[i]));
