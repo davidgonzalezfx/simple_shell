@@ -38,13 +38,22 @@ Sets an environment variable, overwrite if exist, creates it of doesn't exist.
 Unsets a an environment variable, prints error if cant be found
 
 .SH Examples
+$ ./hsh
+
 hsh$ pwd
 
-hsh$ env
+/home/holberton
 
-hsh$ setenv PATH /user/bin
+hsh$ echo hello world
+
+hello world
+
+hsh$ a
+
+./hsh: 3: a: not found
 
 hsh$ exit
+
 .SH OPTIONS
 No options
 .SH SEE ALSO
